@@ -206,33 +206,21 @@ public class Review {
     public static String fakeReview(String fileName, String type) {
         // no try-catch assuming all parameters are correct
         String review = textToString(fileName);
+        String[] reviewInWords = review.split(" ");
 
         String adjFile = type + "Adjectives.txt";
         String[] newWords = textToString(adjFile).split(" ");
-        ArrayList<String> newWords2 = new ArrayList<String>();
-        for (int j = 0; j < newWords.length; j++) {
-            if (!newWords[j].equals(""))
-                newWords2.add(newWords[j]);
-        } // filter out the ""
 
-        String[] reviewInWords = review.split(" ");
         for (int i = 0; i < reviewInWords.length; i++) {
             String word = reviewInWords[i];
-
             if (word.substring(0, 1).equals("*")) {
-                String newWord = newWords2.get((int) (Math.random() * (newWords2.size())));
-                if (type.equals("positive"))
-                    while (sentimentVal(newWord) < 1) {
-                        newWord = newWords2.get((int) (Math.random() * (newWords2.size())));
-                    }
-                else
-                    while (sentimentVal(newWord) > -1) {
-                        newWord = newWords2.get((int) (Math.random() * (newWords2.size())));
-                    }
+                String newWord = newWords[(int) (Math.random() * (newWords.length))];
+                while (Math.abs(sentimentVal(newWord)) < 1) {
+                    newWord = newWords[(int) (Math.random() * (newWords.length))];
+                }
                 if (",.".contains(word.substring(word.length() - 1, word.length())))
                     newWord += word.substring(word.length() - 1, word.length());
                 reviewInWords[i] = newWord;
-
             }
         }
 
