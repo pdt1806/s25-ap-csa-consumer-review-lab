@@ -1,9 +1,7 @@
-import java.util.Scanner;
 import java.io.File;
-import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Random;
-import java.io.*;
+import java.util.HashMap;
+import java.util.Scanner;
 
 /**
  * Class that contains helper methods for the Review Lab
@@ -205,10 +203,11 @@ public class Review {
 
     }
 
-    public static String fakeReview(String fileName) {
+    public static String fakeReview(String fileName, String type) {
+        // no try-catch assuming all parameters are correct
         String review = textToString(fileName);
 
-        String adjFile = "positiveAdjectives.txt";
+        String adjFile = type + "Adjectives.txt";
         String[] newWords = textToString(adjFile).split(" ");
         ArrayList<String> newWords2 = new ArrayList<String>();
         for (int j = 0; j < newWords.length; j++) {
@@ -222,6 +221,14 @@ public class Review {
 
             if (word.substring(0, 1).equals("*")) {
                 String newWord = newWords2.get((int) (Math.random() * (newWords2.size())));
+                if (type.equals("positive"))
+                    while (sentimentVal(newWord) < 1) {
+                        newWord = newWords2.get((int) (Math.random() * (newWords2.size())));
+                    }
+                else
+                    while (sentimentVal(newWord) > -1) {
+                        newWord = newWords2.get((int) (Math.random() * (newWords2.size())));
+                    }
                 if (",.".contains(word.substring(word.length() - 1, word.length())))
                     newWord += word.substring(word.length() - 1, word.length());
                 reviewInWords[i] = newWord;
